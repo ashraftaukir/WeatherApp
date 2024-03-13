@@ -1,8 +1,7 @@
 package com.taukir.weatherapp.cloud
 
-import android.util.Log
+import com.taukir.weatherapp.cloud.CloudDataConstant.WEATHER_API_ID
 import com.taukir.weatherapp.models.WeatherResponse
-import retrofit2.Call
 import retrofit2.Response
 
 
@@ -12,12 +11,10 @@ class WeatherRepository {
 
 
     suspend fun getCurrentWeather(): Response<WeatherResponse> {
-        // Example: Get weather based on a predefined location (latitude, longitude)
-        val latitude = 23.777176
-        val longitude = 90.399452
+        val latitude = 25.2048
+        val longitude = 55.2708
 
-        Log.d("hello_taukir", "getCurrentWeather: ")
-        return weatherService.getCurrentWeather(latitude, longitude, "76b262df89f93cfdfe8ea647a38fcf5e")
+        return weatherService.getCurrentWeather(latitude, longitude, WEATHER_API_ID)
     }
 }
 

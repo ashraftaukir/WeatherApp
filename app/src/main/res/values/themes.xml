@@ -13,4 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="TextViewInColoredCard">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="TempTextView">
+        <item name="android:textSize">70sp</item>
+        <item name="android:textColor">@color/grey_10</item>
+    </style>
+
 </resources>

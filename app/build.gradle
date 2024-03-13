@@ -40,6 +40,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     //for location update
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
 
     // retrofit
@@ -51,6 +52,10 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.3.5'
     //viewmodel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+
+    //animation
+    implementation 'com.airbnb.android:lottie:4.1.0'
+
 
     // coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
