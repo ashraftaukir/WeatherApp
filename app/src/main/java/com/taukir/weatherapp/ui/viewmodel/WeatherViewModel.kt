@@ -1,4 +1,4 @@
-package com.taukir.weatherapp.ui
+package com.taukir.weatherapp.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

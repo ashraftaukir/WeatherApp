@@ -1,4 +1,4 @@
-package com.taukir.weatherapp.ui
+package com.taukir.weatherapp.ui.view
 
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.taukir.weatherapp.R
 import com.taukir.weatherapp.models.WeatherResponse
+import com.taukir.weatherapp.ui.viewmodel.WeatherViewModel
 import com.taukir.weatherapp.utils.getWeatherAnimation
 
 class MainActivity : AppCompatActivity() {
