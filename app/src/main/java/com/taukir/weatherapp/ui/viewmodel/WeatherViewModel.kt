@@ -17,10 +17,10 @@ class WeatherViewModel : ViewModel() {
 
 
 
-    fun refreshWeather() {
+    fun refreshWeather(latitude:Double,longitude:Double) {
         viewModelScope.launch {
             try {
-                val response = repository.getCurrentWeather()
+                val response = repository.getCurrentWeather(latitude,longitude)
                 handleResponse(response)
             } catch (e: Exception) {
                 handleError(e.message ?: "Unknown error")

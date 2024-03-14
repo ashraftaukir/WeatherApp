@@ -10,10 +10,7 @@ class WeatherRepository {
     private val weatherService: WeatherService = WeatherApi.create()
 
 
-    suspend fun getCurrentWeather(): Response<WeatherResponse> {
-        val latitude = 25.2048
-        val longitude = 55.2708
-
+    suspend fun getCurrentWeather(latitude:Double,longitude:Double): Response<WeatherResponse> {
         return weatherService.getCurrentWeather(latitude, longitude, WEATHER_API_ID)
     }
 }
