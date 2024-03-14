@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -36,7 +37,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var descriptionTextSwitcher: TextSwitcher
     private lateinit var animationView: LottieAnimationView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+    private lateinit var mainSwipeRefreshLayout: SwipeRefreshLayout
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +85,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        mainSwipeRefreshLayout = findViewById(R.id.mainSwipeRefreshLayout)
         humidityTextSwitcher = findViewById(R.id.humidity_text_view)
         windTextSwitcher = findViewById(R.id.wind_text_view)
         tempTextSwitcher = findViewById(R.id.temp_text_view)
@@ -102,6 +106,12 @@ class MainActivity : AppCompatActivity() {
             if (zipCodeEditText.text.toString().isNotEmpty()) {
                 viewModel.refreshWeatherUsingZipCode(zipCodeEditText.text.toString())
             }
+        }
+
+        mainSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshWeather(latitude, longitude)
+            mainSwipeRefreshLayout.isRefreshing = false
+
         }
 
     }
@@ -176,8 +186,8 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { location ->
                 // Got last known location. In some rare situations, this can be null.
                 if (location != null) {
-                    val latitude = location.latitude
-                    val longitude = location.longitude
+                    latitude = location.latitude
+                    longitude = location.longitude
                     viewModel.refreshWeather(latitude, longitude)
 
                 } else {
