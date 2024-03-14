@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.error.observe(this) {
             // Handle error
+            showToast(it)
         }
 
     }
@@ -75,12 +76,16 @@ class MainActivity : AppCompatActivity() {
         binding.toolbarLayout.citySearchViewImg.setOnClickListener {
             if (binding.toolbarLayout.cityEditText.text.toString().isNotEmpty()) {
                 viewModel.refreshWeatherUsingCity(binding.toolbarLayout.cityEditText.text.toString())
+            }else{
+                showToast("Empty city")
             }
         }
 
         binding.toolbarLayout.zipCodeSearchViewImg.setOnClickListener {
             if (binding.toolbarLayout.zipCodeEditText.text.toString().isNotEmpty()) {
                 viewModel.refreshWeatherUsingZipCode(binding.toolbarLayout.zipCodeEditText.text.toString())
+            }else{
+                showToast("Empty zip code")
             }
         }
 
