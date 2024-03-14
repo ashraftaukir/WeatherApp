@@ -3,22 +3,17 @@ package com.taukir.weatherapp.ui.view
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextSwitcher
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.airbnb.lottie.LottieAnimationView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.taukir.weatherapp.R
+import com.taukir.weatherapp.databinding.ActivityMainBinding
 import com.taukir.weatherapp.models.WeatherResponse
 import com.taukir.weatherapp.ui.viewmodel.WeatherViewModel
 import com.taukir.weatherapp.utils.getWeatherAnimation
@@ -26,30 +21,21 @@ import com.taukir.weatherapp.utils.getWeatherAnimation
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: WeatherViewModel by viewModels()
-    private lateinit var humidityTextSwitcher: TextSwitcher
-    private lateinit var citySearchViewImg: ImageView
-    private lateinit var zipCodeSearchViewImg: ImageView
-    private lateinit var currentCity: AppCompatTextView
-    private lateinit var cityEditText: EditText
-    private lateinit var zipCodeEditText: EditText
-    private lateinit var windTextSwitcher: TextSwitcher
-    private lateinit var tempTextSwitcher: TextSwitcher
-    private lateinit var descriptionTextSwitcher: TextSwitcher
-    private lateinit var animationView: LottieAnimationView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mainSwipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var binding: ActivityMainBinding
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         //set up location
         setUpLocation()
 
-        //initial views
-        initViews()
+        //initial Listeners
+        initListeners()
 
         //initial switcher
         setUpSwitcher()
@@ -84,27 +70,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initViews() {
-        mainSwipeRefreshLayout = findViewById(R.id.mainSwipeRefreshLayout)
-        humidityTextSwitcher = findViewById(R.id.humidity_text_view)
-        windTextSwitcher = findViewById(R.id.wind_text_view)
-        tempTextSwitcher = findViewById(R.id.temp_text_view)
-        descriptionTextSwitcher = findViewById(R.id.description_text_view)
-        currentCity = findViewById(R.id.currentCity)
-        animationView = findViewById(R.id.animation_view)
-        citySearchViewImg = findViewById(R.id.citySearchViewImg)
-        zipCodeSearchViewImg = findViewById(R.id.zipCodeSearchViewImg)
-        cityEditText = findViewById(R.id.cityEditText)
-        zipCodeEditText = findViewById(R.id.zipCodeEditText)
-        citySearchViewImg.setOnClickListener {
-            if (cityEditText.text.toString().isNotEmpty()) {
-                viewModel.refreshWeatherUsingCity(cityEditText.text.toString())
+    private fun initListeners() {
+
+        binding.toolbarLayout.citySearchViewImg.setOnClickListener {
+            if (binding.toolbarLayout.cityEditText.text.toString().isNotEmpty()) {
+                viewModel.refreshWeatherUsingCity(binding.toolbarLayout.cityEditText.text.toString())
             }
         }
 
-        zipCodeSearchViewImg.setOnClickListener {
-            if (zipCodeEditText.text.toString().isNotEmpty()) {
-                viewModel.refreshWeatherUsingZipCode(zipCodeEditText.text.toString())
+        binding.toolbarLayout.zipCodeSearchViewImg.setOnClickListener {
+            if (binding.toolbarLayout.zipCodeEditText.text.toString().isNotEmpty()) {
+                viewModel.refreshWeatherUsingZipCode(binding.toolbarLayout.zipCodeEditText.text.toString())
             }
         }
 
@@ -119,27 +95,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpSwitcher() {
 
-        tempTextSwitcher.setFactory {
+        binding.contentMainLayout.tempTextView.setFactory {
             val textView = TextView(this)
             textView.textSize = 40f
             textView.setTextColor(ContextCompat.getColor(this, R.color.grey_10))
             textView
         }
-        descriptionTextSwitcher.setFactory {
+        binding.contentMainLayout.descriptionTextView.setFactory {
             val textView = TextView(this)
             textView.textSize = 25f
             textView.setTextColor(ContextCompat.getColor(this, R.color.grey_10))
             textView
         }
 
-        humidityTextSwitcher.setFactory {
+        binding.contentMainLayout.humidityTextView.setFactory {
             val textView = TextView(this)
             textView.textSize = 16f
             textView.setTextColor(ContextCompat.getColor(this, R.color.grey_10))
             textView
         }
 
-        windTextSwitcher.setFactory {
+        binding.contentMainLayout.windTextView.setFactory {
             val textView = TextView(this)
             textView.textSize = 16f
             textView.setTextColor(ContextCompat.getColor(this, R.color.grey_10))
@@ -151,18 +127,18 @@ class MainActivity : AppCompatActivity() {
     private fun updateUI(weather: WeatherResponse?) {
 
         if (weather != null) {
-            currentCity.text = weather.name
-            descriptionTextSwitcher.setText(weather.weather[0].description)
-            tempTextSwitcher.setText("${weather.main.temp}°")
-            humidityTextSwitcher.setText("${weather.main.humidity}%")
-            windTextSwitcher.setText("${weather.wind.speed} km/hr")
+            binding.contentMainLayout.currentCity.text = weather.name
+            binding.contentMainLayout.descriptionTextView.setText(weather.weather[0].description)
+            binding.contentMainLayout.tempTextView.setText("${weather.main.temp}°")
+            binding.contentMainLayout.humidityTextView.setText("${weather.main.humidity}%")
+            binding.contentMainLayout.windTextView.setText("${weather.wind.speed} km/hr")
 
-            animationView.setAnimation(
+            binding.contentMainLayout.animationView.setAnimation(
                 getWeatherAnimation(
                     weather.weather[0].id
                 )
             )
-            animationView.playAnimation()
+            binding.contentMainLayout.animationView.playAnimation()
         }
     }
 
