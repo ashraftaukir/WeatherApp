@@ -23,5 +23,11 @@ interface WeatherService {
         @Query("appid") appId: String?
     ):  Response<WeatherResponse>
 
+
+    @GET(Weather)
+    suspend fun getCurrentWeatherUsingZipCode(
+        @Query("zip") zipCode: String,
+        @Query("appid") apiKey: String
+    ):  Response<WeatherResponse>
 }
 

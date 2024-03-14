@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
@@ -25,8 +26,11 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: WeatherViewModel by viewModels()
     private lateinit var humidityTextSwitcher: TextSwitcher
-    private lateinit var searchViewImg: ImageView
+    private lateinit var citySearchViewImg: ImageView
+    private lateinit var zipCodeSearchViewImg: ImageView
+    private lateinit var currentCity: AppCompatTextView
     private lateinit var cityEditText: EditText
+    private lateinit var zipCodeEditText: EditText
     private lateinit var windTextSwitcher: TextSwitcher
     private lateinit var tempTextSwitcher: TextSwitcher
     private lateinit var descriptionTextSwitcher: TextSwitcher
@@ -63,11 +67,17 @@ class MainActivity : AppCompatActivity() {
 
         // Check for permission
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        ) {
             requestLocation()
         } else {
             // Request permissions
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ), REQUEST_LOCATION_PERMISSION
+            )
         }
     }
 
@@ -76,18 +86,28 @@ class MainActivity : AppCompatActivity() {
         windTextSwitcher = findViewById(R.id.wind_text_view)
         tempTextSwitcher = findViewById(R.id.temp_text_view)
         descriptionTextSwitcher = findViewById(R.id.description_text_view)
+        currentCity = findViewById(R.id.currentCity)
         animationView = findViewById(R.id.animation_view)
-        searchViewImg = findViewById(R.id.searchViewImg)
+        citySearchViewImg = findViewById(R.id.citySearchViewImg)
+        zipCodeSearchViewImg = findViewById(R.id.zipCodeSearchViewImg)
         cityEditText = findViewById(R.id.cityEditText)
-        searchViewImg.setOnClickListener {
-            if(cityEditText.text.toString().isNotEmpty()){
+        zipCodeEditText = findViewById(R.id.zipCodeEditText)
+        citySearchViewImg.setOnClickListener {
+            if (cityEditText.text.toString().isNotEmpty()) {
                 viewModel.refreshWeatherUsingCity(cityEditText.text.toString())
             }
         }
+
+        zipCodeSearchViewImg.setOnClickListener {
+            if (zipCodeEditText.text.toString().isNotEmpty()) {
+                viewModel.refreshWeatherUsingZipCode(zipCodeEditText.text.toString())
+            }
+        }
+
     }
 
 
-    private fun setUpSwitcher(){
+    private fun setUpSwitcher() {
 
         tempTextSwitcher.setFactory {
             val textView = TextView(this)
@@ -121,7 +141,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateUI(weather: WeatherResponse?) {
 
         if (weather != null) {
-            Log.d("check_weather_json", weather.toString())
+            currentCity.text = weather.name
             descriptionTextSwitcher.setText(weather.weather[0].description)
             tempTextSwitcher.setText("${weather.main.temp}°")
             humidityTextSwitcher.setText("${weather.main.humidity}%")
@@ -158,7 +178,7 @@ class MainActivity : AppCompatActivity() {
                 if (location != null) {
                     val latitude = location.latitude
                     val longitude = location.longitude
-                    viewModel.refreshWeather(latitude,longitude)
+                    viewModel.refreshWeather(latitude, longitude)
 
                 } else {
                     showToast("No location available")
@@ -174,7 +194,11 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

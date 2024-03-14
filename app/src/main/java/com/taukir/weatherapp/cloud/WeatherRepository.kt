@@ -19,5 +19,9 @@ class WeatherRepository {
         return weatherService.getCurrentWeatherUsingCity(city, CloudDataConstant.UNITS, defaultLang,WEATHER_API_ID)
     }
 
+    suspend fun getCurrentWeatherUsingZipCode(zipCode:String): Response<WeatherResponse> {
+        return weatherService.getCurrentWeatherUsingZipCode(zipCode,WEATHER_API_ID)
+    }
+
 }
 

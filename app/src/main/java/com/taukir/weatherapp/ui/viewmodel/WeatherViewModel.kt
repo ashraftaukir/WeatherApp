@@ -39,6 +39,18 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+    fun refreshWeatherUsingZipCode(zipCode: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getCurrentWeatherUsingZipCode(zipCode)
+                handleResponse(response)
+            } catch (e: Exception) {
+                handleError(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+
     private fun handleResponse(response: Response<WeatherResponse>) {
         weather.value = response.body()
     }

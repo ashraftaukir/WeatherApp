@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,7 +17,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            >
 
             <EditText
                 android:id="@+id/cityEditText"
@@ -25,18 +27,17 @@
                 android:layout_height="35dp"
                 android:background="@drawable/newdesigneetbg"
                 android:hint="City"
-                android:paddingStart="5dp"
+                android:paddingStart="10dp"
                 android:textColorHint="@color/newdesignhint"
-                app:layout_constraintEnd_toStartOf="@+id/searchViewImg"
+                app:layout_constraintEnd_toStartOf="@+id/citySearchViewImg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="10dp"
                 />
             <ImageView
-                android:id="@+id/searchViewImg"
+                android:id="@+id/citySearchViewImg"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/newgradientbg"
@@ -46,10 +47,47 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/searchViewImg"
-                app:layout_constraintEnd_toEndOf="@+id/searchViewImg"
-                app:layout_constraintStart_toStartOf="@+id/searchViewImg"
-                app:layout_constraintTop_toTopOf="@+id/searchViewImg"
+                app:layout_constraintBottom_toBottomOf="@+id/citySearchViewImg"
+                app:layout_constraintEnd_toEndOf="@+id/citySearchViewImg"
+                app:layout_constraintStart_toStartOf="@+id/citySearchViewImg"
+                app:layout_constraintTop_toTopOf="@+id/citySearchViewImg"
+                android:background="@drawable/newsearchicon"
+                />
+
+
+
+            <EditText
+                android:id="@+id/zipCodeEditText"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:background="@drawable/newdesigneetbg"
+                android:hint="ZipeCode"
+                android:paddingStart="10dp"
+                android:layout_marginTop="10dp"
+                android:textColorHint="@color/newdesignhint"
+                app:layout_constraintEnd_toStartOf="@+id/zipCodeSearchViewImg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cityEditText"
+                android:layout_marginEnd="10dp"
+                />
+            <ImageView
+                android:id="@+id/zipCodeSearchViewImg"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:layout_constraintBottom_toBottomOf="@+id/zipCodeEditText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/zipCodeEditText"
+                android:background="@drawable/newgradientbg"
+                android:layout_marginEnd="10dp"
+                />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/zipCodeSearchViewImg"
+                app:layout_constraintEnd_toEndOf="@+id/zipCodeSearchViewImg"
+                app:layout_constraintStart_toStartOf="@+id/zipCodeSearchViewImg"
+                app:layout_constraintTop_toTopOf="@+id/zipCodeSearchViewImg"
                 android:background="@drawable/newsearchicon"
                 />
 
