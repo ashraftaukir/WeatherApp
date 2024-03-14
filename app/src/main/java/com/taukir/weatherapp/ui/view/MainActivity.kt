@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextSwitcher
 import android.widget.TextView
 import android.widget.Toast
@@ -23,6 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: WeatherViewModel by viewModels()
     private lateinit var humidityTextSwitcher: TextSwitcher
+    private lateinit var searchViewImg: ImageView
+    private lateinit var cityEditText: EditText
     private lateinit var windTextSwitcher: TextSwitcher
     private lateinit var tempTextSwitcher: TextSwitcher
     private lateinit var descriptionTextSwitcher: TextSwitcher
@@ -34,17 +38,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        // Check for permission
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-            checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            requestLocation()
-        } else {
-            // Request permissions
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
-        }
-
+        //set up location
+        setUpLocation()
 
         //initial views
         initViews()
@@ -62,12 +57,33 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun setUpLocation() {
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // Check for permission
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            requestLocation()
+        } else {
+            // Request permissions
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        }
+    }
+
     private fun initViews() {
         humidityTextSwitcher = findViewById(R.id.humidity_text_view)
         windTextSwitcher = findViewById(R.id.wind_text_view)
         tempTextSwitcher = findViewById(R.id.temp_text_view)
         descriptionTextSwitcher = findViewById(R.id.description_text_view)
         animationView = findViewById(R.id.animation_view)
+        searchViewImg = findViewById(R.id.searchViewImg)
+        cityEditText = findViewById(R.id.cityEditText)
+        searchViewImg.setOnClickListener {
+            if(cityEditText.text.toString().isNotEmpty()){
+                viewModel.refreshWeatherUsingCity(cityEditText.text.toString())
+            }
+        }
     }
 
 

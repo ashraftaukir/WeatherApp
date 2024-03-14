@@ -28,6 +28,17 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+    fun refreshWeatherUsingCity(city: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getCurrentWeatherUsingCity(city)
+                handleResponse(response)
+            } catch (e: Exception) {
+                handleError(e.message ?: "Unknown error")
+            }
+        }
+    }
+
     private fun handleResponse(response: Response<WeatherResponse>) {
         weather.value = response.body()
     }

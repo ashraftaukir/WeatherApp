@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="material_blue">#6452f0</color>
     <color name="grey_10">#e6e6e6</color>
+    <color name="newdesignsearch">#F5F5F5</color>
+    <color name="newdesignhint">#848485</color>
+    <color name="newdesigngradienttop">#028985</color>
+    <color name="newdesigngradientbottom">#3AB678</color>
 </resources>
